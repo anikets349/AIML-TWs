@@ -17,6 +17,19 @@ class Graph:
                 if i not in visited:
                     queue.append(i)
                     visited.append(i)
+    def DFSRec(self, s, visited):
+        visited.append(s)
+        print(s, end = " ")
+        for i in self.graph[s]:
+            if i not in visited:
+                self.DFSRec(i, visited)
+    def DFS(self, s):
+        visited = []
+        visited.append(s)
+        print(s, end = " ")
+        for i in self.graph[s]:
+            if i not in visited:
+                self.DFSRec(i, visited)
 
 g = Graph()
 
@@ -29,5 +42,9 @@ g.addEdge('C', 'G')
 g.addEdge('C', 'I')
 g.addEdge('D', 'I')
 
+print(g.graph)
 print('BFS with starting node A : ', end= " ")
 g.BFS('A')
+print("")
+print('DFS with starting node A : ', end= " ")
+g.DFS('A')
