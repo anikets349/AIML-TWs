@@ -24,6 +24,7 @@ class Graph:
                 print("Path exists")
                 return
             print("Path does not exist")
+            print("")
                 
 g = Graph()
 
