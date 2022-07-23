@@ -5,46 +5,33 @@ class Graph:
         self.graph = defaultdict(list)
     def addEdge(self, u, v):
         self.graph[u].append(v)
-    def BFS(self, s):
-        queue = []
-        visited = []
-        queue.append(s)
-        visited.append(s)
-        while queue:
-            s = queue.pop(0)
-            print(s, end = " ")
-            for i in self.graph[s]:
-                if i not in visited:
-                    queue.append(i)
-                    visited.append(i)
-    def DFSRec(self, s, visited):
-        visited.append(s)
+    def DFS(self, s, g, depth):
         print(s, end = " ")
+        if s == g:
+            return True
+        if depth <= 0:
+            return False
         for i in self.graph[s]:
-            if i not in visited:
-                self.DFSRec(i, visited)
-    def DFS(self, s):
-        visited = []
-        visited.append(s)
-        print(s, end = " ")
-        for i in self.graph[s]:
-            if i not in visited:
-                self.DFSRec(i, visited)
-
+            if self.DFS(i, g, depth - 1):
+                return True
+        return False
+    def DFID(self, s, g, maxDepth):
+        for i in range(maxDepth):
+            print("DFS at level ", i)
+            isPathFound = self.DFS(s, g, i)
+            print("")
+            if isPathFound == True:
+                print("Path exists")
+                return
+            print("Path does not exist")
+                
 g = Graph()
 
 g.addEdge('A', 'B')
 g.addEdge('A', 'C')
-g.addEdge('A', 'D')
+g.addEdge('B', 'D')
 g.addEdge('B', 'E')
-g.addEdge('B', 'F')
+g.addEdge('C', 'F')
 g.addEdge('C', 'G')
-g.addEdge('C', 'I')
-g.addEdge('D', 'I')
+g.DFID('A', 'G', 3)
 
-print(g.graph)
-print('BFS with starting node A : ', end= " ")
-g.BFS('A')
-print("")
-print('DFS with starting node A : ', end= " ")
-g.DFS('A')
