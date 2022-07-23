@@ -5,22 +5,22 @@ class Graph:
         self.graph = defaultdict(list)
     def addEdge(self, u, v):
         self.graph[u].append(v)
-    def DFS(self, s, g, depth):
-        print(s, end = " ")
-        if s == g:
+    def DFS(self, start, goal, depth):
+        print(start, end = " ")
+        if start == goal:
             return True
         if depth <= 0:
             return False
-        for i in self.graph[s]:
-            if self.DFS(i, g, depth - 1):
+        for i in self.graph[start]:
+            if self.DFS(i, goal, depth - 1):
                 return True
         return False
-    def DFID(self, s, g, maxDepth):
+    def DFID(self, start, goal, maxDepth):
         for i in range(maxDepth):
             print("DFS at level ", i)
-            isPathFound = self.DFS(s, g, i)
+            isPathFound = self.DFS(start, goal, i)
             print("")
-            if isPathFound == True:
+            if isPathFound:
                 print("Path exists")
                 return
             print("Path does not exist")
