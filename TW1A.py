@@ -18,12 +18,13 @@ class Graph:
     def DFID(self, start, goal, maxDepth):
         for i in range(maxDepth):
             print("DFS at level ", i)
+            print("Path Taken:", end = " ")
             isPathFound = self.DFS(start, goal, i)
             print("")
             if isPathFound:
-                print("Path exists")
+                print("Path to find the goal node exists")
                 return
-            print("Path does not exist")
+            print("Path to find the goal node does not exist")
             print("")
                 
 g = Graph()
@@ -34,5 +35,5 @@ g.addEdge('B', 'D')
 g.addEdge('B', 'E')
 g.addEdge('C', 'F')
 g.addEdge('C', 'G')
-g.DFID('A', 'G', 3)
+g.DFID('A', 'E', 3)
 
