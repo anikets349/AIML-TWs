@@ -6,15 +6,16 @@ def unitStep(x, t):
     return 0
 
 def perceptronLearn(inputs, outputs, w, a, th):
-    epochs = 10
+    epochs = 30
+    numInstances = inputs.shape[0]
+    numInputs = inputs.shape[1]
     for j in range(0, epochs):
         print("Epoch", j + 1)
         flag = False
-        for i in range(0, inputs.shape[0]):
+        for i in range(0, numInstances):
             print("Training instance ", i + 1, ":", inputs[i])
-            x0 = inputs[i][0]
-            x1 = inputs[i][1]
-            weightedSum = x0 * w[0] + x1 * w[1]
+            x = inputs[i]
+            weightedSum = np.dot(w, x)
             pred = unitStep(weightedSum, th)
             print("Target:", outputs[i], "Predicted:", pred)
             error = outputs[i] - pred
@@ -23,8 +24,8 @@ def perceptronLearn(inputs, outputs, w, a, th):
             else:
                 flag = True
                 print("Output not matching. Weights need to be updated")
-                w[0] = round(w[0] + (a * x0 * error), 1)
-                w[1] = round(w[1] + (a * x1 * error), 1)
+                for k in range(0, numInputs):
+                    w[k] = round(w[k] + (a * x[k] * error), 1)
                 print("Updated weights:", w)
         if not flag:
             print("\nFinal weights:", w)
@@ -32,14 +33,20 @@ def perceptronLearn(inputs, outputs, w, a, th):
         print("")
 
 inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+inputsNOT = np.array([[0], [1]])
 outputsOR = np.array([0, 1, 1, 1])
 outputsAND = np.array([0, 0, 0, 1])
+outputsNOT = np.array([1, 0])
 
-print("")
+print("-----------------------------------------------")
 print("OR gate")
 perceptronLearn(inputs, outputsOR, [-0.2, 0.4], 0.2, 0)
 
-
-print("\n\n")
+print("-----------------------------------------------")
 print("AND gate")
 perceptronLearn(inputs, outputsAND, [0.2, 0.4], 0.5, 1)
+
+print("-----------------------------------------------")
+print("NOT gate")
+perceptronLearn(inputsNOT, outputsNOT, [-0.3], 0.5, -1)
+
