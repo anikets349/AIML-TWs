@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-emails = pd.read_csv('/home/lab2/Downloads/emails.csv')
+emails = pd.read_csv('D:/New folder/6th sem/AIML lab/TW3B/emails.csv')
+emails.drop_duplicates(inplace=True)
 
 def process_email(text):
     text = text.lower()
