@@ -1,68 +1,54 @@
-import numpy as np 
-#np.random.seed(0)
+import  numpy as np
 
-def sigmoid (x):
-    return 1/(1 + np.exp(-x))
+x = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+print('Input:')
+print(x)
 
-def sigmoid_derivative(x):
-    return x * (1 - x)
+y = np.array([[0], [1], [1], [0]])
+print('Actual output: ')
+print(y)
 
-#Input datasets
-inputs = np.array([[0,0],[0,1],[1,0],[1,1]])
-expected_output = np.array([[0],[1],[1],[0]])
+def sigmoid(x):
+	return 1 / (1 + np.exp(-x))
 
-epochs = 10000
-lr = 0.1
-inputLayerNeurons, hiddenLayerNeurons, outputLayerNeurons = 2,2,1
+def derivatives_sigmoid(x):
+	return x * (1 - x)
 
-#Random weights and bias initialization
-hidden_weights = np.random.uniform(size=(inputLayerNeurons,hiddenLayerNeurons))
-hidden_bias =np.random.uniform(size=(1,hiddenLayerNeurons))
-output_weights = np.random.uniform(size=(hiddenLayerNeurons,outputLayerNeurons))
-output_bias = np.random.uniform(size=(1,outputLayerNeurons))
+# initializing variables
+epoch = 6000
+lr = 0.15
+inputlayer_neurons = x.shape[1]
+hiddenlayer_neurons = 2
+output_neurons = 1
 
-print("Initial hidden weights: ",end='')
-print(*hidden_weights)
-print("Initial hidden biases: ",end='')
-print(*hidden_bias)
-print("Initial output weights: ",end='')
-print(*output_weights)
-print("Initial output biases: ",end='')
-print(*output_bias)
+# initializing weight and bias
+wh = np.random.uniform(size=(inputlayer_neurons, hiddenlayer_neurons))
+bh = np.random.uniform(size=(1, hiddenlayer_neurons))
+wout = np.random.uniform(size=(hiddenlayer_neurons, output_neurons))
+bout = np.random.uniform(size=(1, output_neurons))
 
+# training the model
+for i in range(epoch):
+	# forward propagation
+	hidden_layer_input1 = np.dot(x, wh)
+	hidden_layer_input = hidden_layer_input1 + bh
+	hiddenlayer_activations = sigmoid(hidden_layer_input)
+	output_layer_input1 = np.dot(hiddenlayer_activations, wout)
+	output_layer_input = output_layer_input1 + bout
+	output = sigmoid(output_layer_input)
 
-#Training algorithm
-for _ in range(epochs):
-	#Forward Propagation
-	hidden_layer_activation = np.dot(inputs,hidden_weights)
-	hidden_layer_activation += hidden_bias
-	hidden_layer_output = sigmoid(hidden_layer_activation)
+	# backpropagation
+	e = y - output
+	slope_output_layer = derivatives_sigmoid(output)
+	slope_hidden_layer = derivatives_sigmoid(hiddenlayer_activations)
+	d_output = e * slope_output_layer
+	error_at_hidden_layer = d_output.dot(wout.T)
+	d_hiddenlayer = error_at_hidden_layer * slope_hidden_layer
+	wout += hiddenlayer_activations.T.dot(d_output) * lr
+	bout += np.sum(d_output, axis = 0, keepdims = True) * lr
+	wh += x.T.dot(d_hiddenlayer) * lr
+	bh += np.sum(d_hiddenlayer, axis = 0, keepdims = True) * lr
 
-	output_layer_activation = np.dot(hidden_layer_output,output_weights)
-	output_layer_activation += output_bias
-	predicted_output = sigmoid(output_layer_activation)
-
-	#Backpropagation
-	error = expected_output - predicted_output
-	d_predicted_output = error * sigmoid_derivative(predicted_output)
-	
-	error_hidden_layer = d_predicted_output.dot(output_weights.T)
-	d_hidden_layer = error_hidden_layer * sigmoid_derivative(hidden_layer_output)
-
-	#Updating Weights and Biases
-	output_weights += hidden_layer_output.T.dot(d_predicted_output) * lr
-	output_bias += np.sum(d_predicted_output,axis=0,keepdims=True) * lr
-	hidden_weights += inputs.T.dot(d_hidden_layer) * lr
-	hidden_bias += np.sum(d_hidden_layer,axis=0,keepdims=True) * lr
-
-print("Final hidden weights: ",end='')
-print(*hidden_weights)
-print("Final hidden bias: ",end='')
-print(*hidden_bias)
-print("Final output weights: ",end='')
-print(*output_weights)
-print("Final output bias: ",end='')
-print(*output_bias)
-
-print("\nOutput from neural network after 10,000 epochs: ",end='')
-print(*predicted_output)
+print('Output from the model: ')
+print(output)
+print(np.round(output))
