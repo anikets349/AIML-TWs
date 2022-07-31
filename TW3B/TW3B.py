@@ -26,12 +26,12 @@ for index, email in emails.iterrows():
         if word not in model:
             model[word] = {'spam': 1, 'ham': 1}
 
-        if word not in model:
+        if word in model:
             if email['spam']:
                 model[word]['spam'] += 1
 
             else:
-                model[word]['ham'] +1
+                model[word]['ham'] +=1
 
 
 def predict_bayes(word):
@@ -61,6 +61,6 @@ def predict_naive_bayes(email):
     return prod_spams/(prod_spams + prod_hams)
 
 
-print('Prodication using NaiveBayes for word lottery sale', predict_naive_bayes('lottery sale'))
-print('Prodication using NaiveBayes for word lottery sale', predict_naive_bayes('asdfgh'))
-print('Prodication using NaiveBayes for word lottery sale', predict_naive_bayes('Hi Mom, How are you?'))
+print('Predication using NaiveBayes for word lottery sale', predict_naive_bayes('lottery sale'))
+print('Predication using NaiveBayes for word company', predict_naive_bayes('company'))
+print('Predication using NaiveBayes for word Hello Mom, I am here at home', predict_naive_bayes('Hello Mom, I am here at home'))
