@@ -1,39 +1,38 @@
 from collections import defaultdict
 
-class Graph:
-    def __init__(self):
-        self.graph = defaultdict(list)
-    def addEdge(self, u, v):
-        self.graph[u].append(v)
-    def DFS(self, start, goal, depth):
-        print(start, end = " ")
-        if start == goal:
-            return True
-        if depth <= 0:
-            return False
-        for i in self.graph[start]:
-            if self.DFS(i, goal, depth - 1):
-                return True
+def addEdge(u, v):
+    graph[u].append(v)
+
+def dfs(start, goal, depth):
+    print(start, end = " ")
+    if start == goal:
+        return True
+    if depth <= 0:
         return False
-    def DFID(self, start, goal, maxDepth):
-        for i in range(maxDepth):
-            print("DFS at level ", i)
-            print("Path Taken:", end = " ")
-            isPathFound = self.DFS(start, goal, i)
-            print("")
-            if isPathFound:
-                print("Path to find the goal node exists")
-                return
-            print("Path to find the goal node does not exist")
-            print("")
-                
-g = Graph()
+    for i in graph[start]:
+        if dfs(i, goal, depth - 1):
+            return True
+    return False
+    
 
-g.addEdge('A', 'B')
-g.addEdge('A', 'C')
-g.addEdge('B', 'D')
-g.addEdge('B', 'E')
-g.addEdge('C', 'F')
-g.addEdge('C', 'G')
-g.DFID('A', 'E', 3)
+def dfid(start, goal, maxDepth):
+    print(f"DFID for start node {start}, goal node {goal}")
+    for i in range(maxDepth):
+        print("\nDFS at level", i + 1)
+        print("Path taken:", end = " ")
+        isPathFound = dfs(start, goal, i)
+        if isPathFound:
+            print("\nGoal node  found")
+            return
+        else:
+            print("\nGoal node not found")
+    
 
+graph = defaultdict(list)
+addEdge('A', 'B')
+addEdge('A', 'C')
+addEdge('B', 'D')
+addEdge('B', 'E')
+addEdge('C', 'F')
+addEdge('C', 'G')
+dfid('A', 'Z', 3)
