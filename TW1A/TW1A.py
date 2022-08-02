@@ -13,7 +13,6 @@ def dfs(start, goal, depth):
         if dfs(i, goal, depth - 1):
             return True
     return False
-    
 
 def dfid(start, goal, maxDepth):
     print(f"DFID for start node {start}, goal node {goal}")
@@ -27,7 +26,6 @@ def dfid(start, goal, maxDepth):
         else:
             print("\nGoal node not found")
     
-
 graph = defaultdict(list)
 addEdge('A', 'B')
 addEdge('A', 'C')
